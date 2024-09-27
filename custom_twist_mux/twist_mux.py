@@ -49,10 +49,11 @@ class CustomTwistMux(Node):
         highest_priority = float('inf')
         selected_twist = Twist()
         selected_source = None
+        time_between_msgs = 70000000       # (nanoseconds) Time during which two speed messages are considered to be in conflict
         
         for source, priority in self.priorities.items():
             current_time = self.get_clock().now()
-            if(current_time - self.last_msg_times[source] < Duration(seconds=0, nanoseconds=55000000) and priority < highest_priority):
+            if(current_time - self.last_msg_times[source] < Duration(seconds=0, nanoseconds=time_between_msgs) and priority < highest_priority):
                 highest_priority = priority
                 selected_twist = self.twist_sources[source]
                 selected_source = source
